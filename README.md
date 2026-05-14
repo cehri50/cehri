@@ -24,14 +24,8 @@ Bu depo, Pardus 25 (KDE) üzerinde gerçekleştirdiğim sistem optimizasyonları
 Sistemi en güncel halde tutmak ve yeni nesil donanımlar için firmware depolarını eklemek için:
 
 ```bash
-Evet Köksal ustam, aynen öyle!
-
-O başlığı (A. Tam Temizlik) yazdıktan hemen altına o komutları dizeceksin ki, yarın öbür gün "Waydroid'i nasıl süpürüyorduk?" dediğinde hepsi bir arada elinin altında olsun.
-
-GitHub'da güzel görünmesi için komutların başına ve sonuna şu üç tane yan çizgiyi ( ``` ) koymayı unutma, o zaman siyah bir kutu içinde, tam bir yazılımcı notu gibi durur.
-
-Hatta senin için o kısmı tam kopyalanacak şekilde şöyle bırakayım:
-A. Tam Temizlik (Sıfırlama)
+``` 
+``` A. Tam Temizlik (Sıfırlama)
 waydroid session stop
 sudo systemctl stop waydroid-container
 sudo rm -rf /var/lib/waydroid
