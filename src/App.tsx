@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Search, 
@@ -14,7 +14,10 @@ import {
   ExternalLink,
   ChevronRight,
   Terminal,
-  BookOpen
+  BookOpen,
+  Plus,
+  X,
+  Code2
 } from 'lucide-react';
 import { NOTES, CATEGORIES, Note } from './constants';
 
@@ -29,18 +32,43 @@ const IconMap: Record<string, any> = {
 };
 
 export default function App() {
+  const [allNotes, setAllNotes] = useState<Note[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  
+  // New Note Form State
+  const [newNote, setNewNote] = useState({
+    title: '',
+    category: 'system',
+    content: '',
+    isCode: true
+  });
+
+  // Load and merge notes
+  useEffect(() => {
+    const saved = localStorage.getItem('cehri50_user_notes');
+    const userNotes = saved ? JSON.parse(saved) : [];
+    
+    // Merge initial and user notes
+    const merged = [...NOTES];
+    userNotes.forEach((un: Note) => {
+      if (!merged.find(n => n.id === un.id)) {
+        merged.push(un);
+      }
+    });
+    setAllNotes(merged);
+  }, []);
 
   const filteredNotes = useMemo(() => {
-    return NOTES.filter(note => {
+    return allNotes.filter(note => {
       const matchesSearch = note.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           note.content.toLowerCase().includes(searchQuery.toLowerCase());
       const matchesCategory = selectedCategory === 'all' || note.category === selectedCategory;
       return matchesSearch && matchesCategory;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [allNotes, searchQuery, selectedCategory]);
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -48,8 +76,141 @@ export default function App() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
+  const handleAddNote = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newNote.title || !newNote.content) return;
+
+    const addedNote: Note = {
+      ...newNote,
+      id: `user-${Date.now()}`
+    };
+
+    const updatedNotes = [...allNotes, addedNote];
+    setAllNotes(updatedNotes);
+    
+    // Save only user notes to localStorage
+    const userNotesOnly = updatedNotes.filter(n => n.id.startsWith('user-'));
+    localStorage.setItem('cehri50_user_notes', JSON.stringify(userNotesOnly));
+
+    setIsAddModalOpen(false);
+    setNewNote({ title: '', category: 'system', content: '', isCode: true });
+  };
+
+  const handleDeleteNote = (id: string) => {
+    if (!id.startsWith('user-')) return; 
+    
+    const updatedNotes = allNotes.filter(n => n.id !== id);
+    setAllNotes(updatedNotes);
+    
+    const userNotesOnly = updatedNotes.filter(n => n.id.startsWith('user-'));
+    localStorage.setItem('cehri50_user_notes', JSON.stringify(userNotesOnly));
+  };
+
   return (
     <div className="min-h-screen bg-[#0a0a0b] text-zinc-300 font-sans selection:bg-emerald-500/30">
+      {/* Add Note Modal */}
+      <AnimatePresence>
+        {isAddModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsAddModalOpen(false)}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm" 
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-3xl p-8 shadow-2xl"
+            >
+              <button 
+                onClick={() => setIsAddModalOpen(false)}
+                className="absolute top-6 right-6 p-2 text-zinc-500 hover:text-zinc-100 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="flex items-center gap-3 mb-8">
+                <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center">
+                  <Plus className="text-emerald-500 w-6 h-6" />
+                </div>
+                <h2 className="text-xl font-bold text-zinc-100">Yeni Not Ekle</h2>
+              </div>
+
+              <form onSubmit={handleAddNote} className="space-y-6">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Not Başlığı</label>
+                  <input 
+                    autoFocus
+                    required
+                    type="text"
+                    value={newNote.title}
+                    onChange={(e) => setNewNote({...newNote, title: e.target.value})}
+                    placeholder="Örn: Waydroid Hızlandırma"
+                    className="w-full bg-zinc-800/50 border border-zinc-700 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all font-sans"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Kategori</label>
+                    <select 
+                      value={newNote.category}
+                      onChange={(e) => setNewNote({...newNote, category: e.target.value})}
+                      className="w-full bg-zinc-800/50 border border-zinc-700 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all appearance-none text-sm font-sans"
+                    >
+                      {CATEGORIES.filter(c => c.id !== 'all').map(c => (
+                        <option key={c.id} value={c.id} className="bg-zinc-900 text-zinc-100">{c.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">Tür</label>
+                    <div className="flex bg-zinc-800/50 border border-zinc-700 rounded-xl p-1">
+                      <button 
+                        type="button"
+                        onClick={() => setNewNote({...newNote, isCode: true})}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${newNote.isCode ? 'bg-emerald-500 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+                      >
+                        <Code2 className="w-3 h-3" /> KOMUT
+                      </button>
+                      <button 
+                        type="button"
+                        onClick={() => setNewNote({...newNote, isCode: false})}
+                        className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${!newNote.isCode ? 'bg-zinc-700 text-white' : 'text-zinc-500 hover:text-zinc-300'}`}
+                      >
+                        <BookOpen className="w-3 h-3" /> NOT
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest">İçerik</label>
+                  <textarea 
+                    required
+                    rows={4}
+                    value={newNote.content}
+                    onChange={(e) => setNewNote({...newNote, content: e.target.value})}
+                    placeholder="Komutları veya açıklamanızı buraya yazın..."
+                    className="w-full bg-zinc-800/50 border border-zinc-700 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50 transition-all font-mono text-sm"
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
+                >
+                  <Plus className="w-5 h-5" /> KAYDET
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <header className="sticky top-0 z-50 border-b border-zinc-800 bg-[#0a0a0bc0] backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
@@ -74,9 +235,13 @@ export default function App() {
             />
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-zinc-500 bg-zinc-900/50 px-3 py-1.5 rounded-full border border-zinc-800">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            Sistem Aktif
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setIsAddModalOpen(true)}
+              className="flex items-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 px-4 py-2 rounded-lg border border-emerald-500/20 text-sm font-bold transition-all"
+            >
+              <Plus className="w-4 h-4" /> <span className="hidden sm:inline text-xs uppercase tracking-tight">YENİ NOT</span>
+            </button>
           </div>
         </div>
 
@@ -152,25 +317,41 @@ export default function App() {
                            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500/70 bg-emerald-500/5 px-2 py-0.5 rounded">
                              {CATEGORIES.find(c => c.id === note.category)?.name}
                            </span>
+                           {note.id.toString().startsWith('user-') && (
+                             <span className="text-[10px] font-bold text-orange-500/70 bg-orange-500/10 px-2 py-0.5 rounded active:scale-95">
+                               KİŞİSEL NOT
+                             </span>
+                           )}
                         </div>
                         <h3 className="text-lg font-bold text-zinc-100 group-hover:text-emerald-400 transition-colors">
                           {note.title}
                         </h3>
                       </div>
                       
-                      {note.isCode && (
-                        <button 
-                          onClick={() => handleCopy(note.content, note.id)}
-                          className={`p-2 rounded-lg border transition-all ${
-                            copiedId === note.id 
-                            ? 'bg-emerald-500/10 border-emerald-500 text-emerald-500' 
-                            : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/50'
-                          }`}
-                          title="Kopyala"
-                        >
-                          {copiedId === note.id ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                        </button>
-                      )}
+                      <div className="flex items-center gap-2">
+                        {note.isCode && (
+                          <button 
+                            onClick={() => handleCopy(note.content, note.id)}
+                            className={`p-2 rounded-lg border transition-all ${
+                              copiedId === note.id 
+                              ? 'bg-emerald-500/10 border-emerald-500 text-emerald-500' 
+                              : 'bg-zinc-800 border-zinc-700 text-zinc-400 hover:text-emerald-400 hover:border-emerald-500/50'
+                            }`}
+                            title="Kopyala"
+                          >
+                            {copiedId === note.id ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                          </button>
+                        )}
+                        {note.id.toString().startsWith('user-') && (
+                          <button 
+                            onClick={() => handleDeleteNote(note.id)}
+                            className="p-2 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-400 hover:text-red-500 hover:border-red-500/50 transition-all"
+                            title="Sil"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
                     </div>
 
                     {note.isCode ? (
@@ -194,7 +375,7 @@ export default function App() {
                   <div className="px-6 py-3 bg-zinc-900/50 border-t border-zinc-800 flex items-center justify-between">
                      <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500">
                        <Terminal className="w-3 h-3 text-emerald-500/50" />
-                       Bash / Terminal
+                       {note.isCode ? 'Terminal / Komut' : 'Bilgilendirme'}
                      </div>
                      <button className="text-[10px] font-bold text-zinc-600 hover:text-emerald-500 flex items-center gap-1 transition-colors">
                        DETAY <ChevronRight className="w-3 h-3" />
@@ -248,4 +429,3 @@ export default function App() {
     </div>
   );
 }
-

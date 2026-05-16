@@ -231,5 +231,25 @@ sudo apt install smartmontools -y
 
 # Disk sağlığı özetini gör (sda yerine kendi diskini yaz)
 sudo smartctl -H /dev/sda`
+  },
+  {
+    id: '20',
+    title: 'Bozuk Paketleri Onar',
+    category: 'system',
+    isCode: true,
+    content: `# Yarım kalmış kurulumları ve bağımlılıkları düzeltir
+sudo apt --fix-broken install
+sudo dpkg --configure -a`
+  },
+  {
+    id: '21',
+    title: 'Kilitlenen Programı Zorla Kapat',
+    category: 'system',
+    isCode: true,
+    content: `# İsmini bildiğin programı sonlandırır
+killall -9 program_adı
+
+# Fare ile tıkladığın pencereyi kapatır (Çok etkilidir)
+xkill`
   }
 ];
