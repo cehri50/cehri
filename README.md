@@ -1,73 +1,37 @@
-# Köksal Usta'nın Teknoloji Notları 🛠️
+# 🛠️ Köksal Usta'nın Pardus & Waydroid Teknoloji Notları
 
-Disketli günlerden Pardus'a uzanan teknoloji yolculuğumda aldığım usta işi notlar burada.
+Disketli günlerden Pardus'a uzanan teknoloji yolculuğumda aldığım **usta işi notlar** burada.
 
-## 📁 Neler Var?
-* **Pardus & Linux:** Sistem optimizasyonları ve karşılaşılan hataların çözümleri.
-* **Waydroid:** Linux üzerinde Android çalıştırma maceraları.
-* **IPTV:** Panel testleri ve M3U yönetimi üzerine geliştirdiğim araçlar.
-
-## 🚀 Son Notlar
-- Canva açılırken yaşanan donma sorunu ve tarayıcı GPU ayarları.
-- GitHub VPN engeli ve giriş yöntemleri.
-- Pardus alt panel ve bildirim simgeleri yönetimi.
-
----
-*Çayımız taze, terminalimiz açık... İşimiz gücümüz teknoloji!*
-# Köksal Usta'nın Pardus & Waydroid Teknoloji Notları 🛠️
-
-Bu depo, Pardus 25 (KDE) üzerinde gerçekleştirdiğim sistem optimizasyonları, Waydroid kurulumları ve karşılaşılan sorunların çözümlerini içeren teknik bir günlük niteliğindedir.
+> *"Çayımız taze, terminalimiz açık... İşimiz gücümüz teknoloji!"*
 
 ---
 
-## 🛠️ 1. Sistem Güncelleme ve Donanım Hazırlığı
-Sistemi en güncel halde tutmak ve yeni nesil donanımlar için firmware depolarını eklemek için:
+## 📁 İçindekiler
 
-```bash
-``` 
-``` A. Tam Temizlik (Sıfırlama)
-waydroid session stop
-sudo systemctl stop waydroid-container
-sudo rm -rf /var/lib/waydroid
-sudo rm -rf ~/.local/share/waydroid
-rm -rf ~/.local/share/applications/waydroid*
-B. Kurulum ve GAPPS (Google Servisleri) Aktifleştirme
-sudo apt update
-sudo apt install curl ca-certificates lzip sqlite3 -y
-curl -s [https://repo.waydro.id](https://repo.waydro.id) | sudo bash
-sudo apt install waydroid -y
-
-# Google Servisleri (GAPPS) ile başlat
-sudo waydroid init -s GAPPS -f
-C. Google Sertifikası (Cihaz Kaydı)
-Köksal ustam, malzemeyi döktün masaya! Gerçekten tam bir "hayat kurtaranlar" listesi olmuş. Hem sistem güncelleme, hem o inatçı Waydroid'i yola getirme, hem de Cloudflare WARP (VPN) komutları... Hepsi pırlanta değerinde.
-
-Şimdi ben bu karışık listeyi senin o GitHub sayfan (cehri50/cehri) için jilet gibi, kategorize edilmiş bir "Usta Rehberi" haline getirdim. Aşağıdaki metni kopyalayıp GitHub'daki README.md dosyanın içine, eski metni silerek veya altına ekleyerek yapıştırabilirsin.
-📝 GitHub İçin Hazırladığım Yeni "Usta Rehberi" Taslağı:
-Markdown
-
-# Köksal Usta'nın Pardus & Waydroid Teknoloji Notları 🛠️
-
-Bu depo, Pardus 25 (KDE) üzerinde gerçekleştirdiğim sistem optimizasyonları, Waydroid kurulumları ve karşılaşılan sorunların çözümlerini içeren teknik bir günlük niteliğindedir.
+1. [Sistem Güncelleme ve Donanım Hazırlığı](#1-sistem-güncelleme-ve-donanim-hazirliği)
+2. [Waydroid: Kurulum ve Temizlik](#2-waydroid-kurulum-ve-temizlik)
+3. [Ağ ve VPN Yönetimi (Cloudflare WARP)](#3-ağ-ve-vpn-yönetimi-cloudflare-warp)
+4. [Sistem Temizliği (BleachBit, System Maid)](#4-sistem-temizliği)
+5. [NumLock Ayarı ve Klavye Donması](#5-numlock-ayarı-ve-klavye-donması)
+6. [DNS ve Depo Güncelleme Sorunları](#6-dns-ve-depo-güncelleme-sorunları)
+7. [Faydalı Kısa Komutlar](#7-faydalı-kısa-komutlar)
 
 ---
 
-## 🛠️ 1. Sistem Güncelleme ve Donanım Hazırlığı
-Sistemi en güncel halde tutmak ve yeni nesil donanımlar için firmware depolarını eklemek için:
+## 1. Sistem Güncelleme ve Donanım Hazırlığı
+
+Sistemi en güncel halde tutmak ve yeni nesil donanımlar için gerekli depolar:
 
 ```bash
 # Paket listesini güncelle ve sistemi yükselt
 sudo apt update && sudo apt full-upgrade -y
 
 # Yeni nesil donanımlar için firmware deposunu ekle (Pardus 23/25)
-echo "deb [http://depo.pardus.org.tr/experimental](http://depo.pardus.org.tr/experimental) yirmiuc-firmware non-free" | sudo tee /etc/apt/sources.list.d/experimental-yirmiuc-firmware.list
+echo "deb http://depo.pardus.org.tr/experimental yirmiuc-firmware non-free" | sudo tee /etc/apt/sources.list.d/experimental-yirmiuc-firmware.list
 sudo apt update
-
-🤖 2. Waydroid: Adım Adım Kurulum ve Temizlik
-
-Eğer Waydroid çalışmazsa veya Facebook gibi uygulamalarda sorun çıkarsa sıfırdan temiz kurulum adımları:
+2. Waydroid: Kurulum ve Temizlik
 A. Tam Temizlik (Sıfırlama)
-Bash
+bash
 
 waydroid session stop
 sudo systemctl stop waydroid-container
@@ -76,61 +40,11 @@ sudo rm -rf ~/.local/share/waydroid
 rm -rf ~/.local/share/applications/waydroid*
 
 B. Kurulum ve GAPPS (Google Servisleri) Aktifleştirme
-Bash
+bash
 
 sudo apt update
 sudo apt install curl ca-certificates lzip sqlite3 -y
-curl -s [https://repo.waydro.id](https://repo.waydro.id) | sudo bash
-sudo apt install waydroid -y
-
-# Google Servisleri (GAPPS) ile başlat
-sudo waydroid init -s GAPPS -f
-
-C. Google Sertifikası (Cihaz Kaydı)
-Waydroid içinde Google Play Store'un çalışması için Android ID'yi alıp Google Uncertified adresine ekleyin:
-sudo waydroid shell
-sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = 'android_id';"
-Köksal ustam, malzemeyi döktün masaya! Gerçekten tam bir "hayat kurtaranlar" listesi olmuş. Hem sistem güncelleme, hem o inatçı Waydroid'i yola getirme, hem de Cloudflare WARP (VPN) komutları... Hepsi pırlanta değerinde.
-
-Şimdi ben bu karışık listeyi senin o GitHub sayfan (cehri50/cehri) için jilet gibi, kategorize edilmiş bir "Usta Rehberi" haline getirdim. Aşağıdaki metni kopyalayıp GitHub'daki README.md dosyanın içine, eski metni silerek veya altına ekleyerek yapıştırabilirsin.
-📝 GitHub İçin Hazırladığım Yeni "Usta Rehberi" Taslağı:
-Markdown
-
-# Köksal Usta'nın Pardus & Waydroid Teknoloji Notları 🛠️
-
-Bu depo, Pardus 25 (KDE) üzerinde gerçekleştirdiğim sistem optimizasyonları, Waydroid kurulumları ve karşılaşılan sorunların çözümlerini içeren teknik bir günlük niteliğindedir.
-
----
-
-## 🛠️ 1. Sistem Güncelleme ve Donanım Hazırlığı
-Sistemi en güncel halde tutmak ve yeni nesil donanımlar için firmware depolarını eklemek için:
-
-```bash
-# Paket listesini güncelle ve sistemi yükselt
-sudo apt update && sudo apt full-upgrade -y
-
-# Yeni nesil donanımlar için firmware deposunu ekle (Pardus 23/25)
-echo "deb [http://depo.pardus.org.tr/experimental](http://depo.pardus.org.tr/experimental) yirmiuc-firmware non-free" | sudo tee /etc/apt/sources.list.d/experimental-yirmiuc-firmware.list
-sudo apt update
-
-🤖 2. Waydroid: Adım Adım Kurulum ve Temizlik
-
-Eğer Waydroid çalışmazsa veya Facebook gibi uygulamalarda sorun çıkarsa sıfırdan temiz kurulum adımları:
-A. Tam Temizlik (Sıfırlama)
-Bash
-
-waydroid session stop
-sudo systemctl stop waydroid-container
-sudo rm -rf /var/lib/waydroid
-sudo rm -rf ~/.local/share/waydroid
-rm -rf ~/.local/share/applications/waydroid*
-
-B. Kurulum ve GAPPS (Google Servisleri) Aktifleştirme
-Bash
-
-sudo apt update
-sudo apt install curl ca-certificates lzip sqlite3 -y
-curl -s [https://repo.waydro.id](https://repo.waydro.id) | sudo bash
+curl -s https://repo.waydro.id | sudo bash
 sudo apt install waydroid -y
 
 # Google Servisleri (GAPPS) ile başlat
@@ -138,97 +52,145 @@ sudo waydroid init -s GAPPS -f
 
 C. Google Sertifikası (Cihaz Kaydı)
 
-Waydroid içinde Google Play Store'un çalışması için Android ID'yi alıp Google Uncertified adresine ekleyin:
-Bash
+Waydroid içinde Play Store'un çalışması için Android ID alınır ve Google Uncertified adresine kaydedilir:
+bash
 
 sudo waydroid shell
 sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = 'android_id';"
 
-🌐 3. Ağ ve VPN Yönetimi (Cloudflare WARP)
+📌 Usta Notu (9 Mayıs 2026)
+
+    Facebook açılmama sorunu, Vendor type kontrolü ve Google hesap izinlerinin (3. taraf uygulama izinleri) temizlenmesiyle çözülmüştür.
+
+3. Ağ ve VPN Yönetimi (Cloudflare WARP)
 
 VPN bağlantısını terminalden yönetmek için:
+bash
 
-    Bağlan: warp-cli connect
+# Bağlan
+warp-cli connect
 
-    Bağlantıyı Kes: warp-cli disconnect
+# Bağlantıyı Kes
+warp-cli disconnect
 
-    Durum Kontrol: warp-cli status
+# Durum Kontrol
+warp-cli status
 
-    Test: curl https://www.cloudflare.com/cdn-cgi/trace | grep warp
-Köksal ustam, malzemeyi döktün masaya! Gerçekten tam bir "hayat kurtaranlar" listesi olmuş. Hem sistem güncelleme, hem o inatçı Waydroid'i yola getirme, hem de Cloudflare WARP (VPN) komutları... Hepsi pırlanta değerinde.
+# Test
+curl https://www.cloudflare.com/cdn-cgi/trace | grep warp
 
-Şimdi ben bu karışık listeyi senin o GitHub sayfan (cehri50/cehri) için jilet gibi, kategorize edilmiş bir "Usta Rehberi" haline getirdim. Aşağıdaki metni kopyalayıp GitHub'daki README.md dosyanın içine, eski metni silerek veya altına ekleyerek yapıştırabilirsin.
-📝 GitHub İçin Hazırladığım Yeni "Usta Rehberi" Taslağı:
-Markdown
+4. Sistem Temizliği
+🧹 Seviye 1: Hafif Temizlik (Önbellek ve Geçici Dosyalar)
+bash
 
-# Köksal Usta'nın Pardus & Waydroid Teknoloji Notları 🛠️
+# 1. Paket yöneticisi önbelleğini temizle
+sudo apt clean
 
-Bu depo, Pardus 25 (KDE) üzerinde gerçekleştirdiğim sistem optimizasyonları, Waydroid kurulumları ve karşılaşılan sorunların çözümlerini içeren teknik bir günlük niteliğindedir.
+# 2. Kullanılmayan bağımlılıkları temizle
+sudo apt autoremove
+
+# 3. KDE önbelleğini temizle
+rm -rf ~/.cache/*
+
+# 4. Thumbnail (küçük resim) önbelleğini temizle
+rm -rf ~/.thumbnails/*
+
+# 5. Geçici dosyaları temizle
+rm -rf /tmp/*
+
+🧽 Seviye 2: Tam Temizlik (BleachBit)
+bash
+
+sudo apt install bleachbit -y
+
+    Uyarı: BleachBit'i root yetkisiyle çalıştırırken "Yerelleştirme" (localization) seçeneğini işaretleme. Yoksa Türkçe dil paketleri silinir.
+
+⚡ En Sade ve En Temiz Yol (Tek Seferlik Kombinasyon)
+bash
+
+# 1. Önbellekleri temizle
+sudo apt clean && sudo apt autoremove -y
+
+# 2. KDE'nin çöplerini at
+rm -rf ~/.cache/* ~/.thumbnails/*
+
+# 3. Gereksiz logları temizle
+sudo journalctl --rotate
+sudo journalctl --vacuum-time=3d
+
+# 4. Çöp kutusunu boşalt
+rm -rf ~/.local/share/Trash/*
+
+5. NumLock Ayarı ve Klavye Donması
+NumLock’u Her Açılışta Aktif Et
+bash
+
+# NumLockX aracını kur
+sudo apt install numlockx -y
+
+# KDE için kalıcı ayar
+kwriteconfig6 --file ~/.config/kwinrc --group ModifierOnlyShortcuts --key Meta "org.kde.plasmashell,/PlasmaShell,org.kde.PlasmaShell,activateLauncherMenu"
+kwriteconfig6 --file ~/.config/kcminputrc --group Keyboard --key NumLock 1
+
+    Sistem Ayarları → Giriş Aygıtları → Klavye → Gelişmiş → "NumLock'u Başlangıçta Aç"
+
+6. DNS ve Depo Güncelleme Sorunları
+
+Eğer sudo apt update'te bağlantı hatası alıyorsan, DNS ayarlarını elle gir:
+bash
+
+# 1. DNS ayar dosyasını yedekleyip yenile
+sudo mv /etc/resolv.conf /etc/resolv.conf.yedek
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+echo "nameserver 1.1.1.1" | sudo tee -a /etc/resolv.conf
+
+# 2. Depo önbelleğini temizle
+sudo rm -rf /var/lib/apt/lists/*
+
+# 3. Depoları güncelle
+sudo apt update   # Artık çalışıyor ✅
+
+7. Faydalı Kısa Komutlar
+bash
+
+# Modem Üzerinden Dosya Paylaşımı (SMB)
+smb://192.168.1.1
+
+# Yazılım Merkezi
+gnome-software
+
+# Waydroid UI
+waydroid show-full-ui
+
+# Waydroid Servis Başlatma
+sudo systemctl start waydroid-container.service
+
+# Cloudflare DNS test
+ping 1.1.1.1
+
+🙏 Hazırlayan: Köksal Usta (cehri50)
+
+    "Disketli günlerden Pardus'a, emekle büyüyen bir rehber."
+
+GitHub: github.com/cehri50/cehri
+İletişim ve katkılar için pull request gönderebilirsiniz.
+
+📌 Son Güncelleme: Mayıs 2026
+🎯 Kapsam: Pardus 25 (KDE) | Waydroid GAPPS | Cloudflare WARP | Sistem Optimizasyonu
+text
+
 
 ---
 
-## 🛠️ 1. Sistem Güncelleme ve Donanım Hazırlığı
-Sistemi en güncel halde tutmak ve yeni nesil donanımlar için firmware depolarını eklemek için:
+## ✍️ YAPMAN GEREKEN
 
-```bash
-# Paket listesini güncelle ve sistemi yükselt
-sudo apt update && sudo apt full-upgrade -y
+1. **Yukarıdaki kodu kopyala** (Üstteki kutu içindeki her şeyi seç, `Ctrl+C` yap).
+2. GitHub'da deponun içinde `README.md` dosyasını aç (yoksa "Add file" → "Create new file" deyip adını `README.md` yaz).
+3. **Yapıştır** (`Ctrl+V`).
+4. **Commit changes** (değişiklikleri kaydet).
 
-# Yeni nesil donanımlar için firmware deposunu ekle (Pardus 23/25)
-echo "deb [http://depo.pardus.org.tr/experimental](http://depo.pardus.org.tr/experimental) yirmiuc-firmware non-free" | sudo tee /etc/apt/sources.list.d/experimental-yirmiuc-firmware.list
-sudo apt update
+**İşte bitti.** Artık depona giren herkes bu yakışıklı, düzenli, çalıştırılabilir komutlarla dolu rehberi görür.
 
-🤖 2. Waydroid: Adım Adım Kurulum ve Temizlik
+---
 
-Eğer Waydroid çalışmazsa veya Facebook gibi uygulamalarda sorun çıkarsa sıfırdan temiz kurulum adımları:
-A. Tam Temizlik (Sıfırlama)
-Bash
-
-waydroid session stop
-sudo systemctl stop waydroid-container
-sudo rm -rf /var/lib/waydroid
-sudo rm -rf ~/.local/share/waydroid
-rm -rf ~/.local/share/applications/waydroid*
-
-B. Kurulum ve GAPPS (Google Servisleri) Aktifleştirme
-Bash
-
-sudo apt update
-sudo apt install curl ca-certificates lzip sqlite3 -y
-curl -s [https://repo.waydro.id](https://repo.waydro.id) | sudo bash
-sudo apt install waydroid -y
-
-# Google Servisleri (GAPPS) ile başlat
-sudo waydroid init -s GAPPS -f
-
-C. Google Sertifikası (Cihaz Kaydı)
-
-Waydroid içinde Google Play Store'un çalışması için Android ID'yi alıp Google Uncertified adresine ekleyin:
-Bash
-
-sudo waydroid shell
-sqlite3 /data/data/com.google.android.gsf/databases/gservices.db "select * from main where name = 'android_id';"
-
-🌐 3. Ağ ve VPN Yönetimi (Cloudflare WARP)
-
-VPN bağlantısını terminalden yönetmek için:
-
-    Bağlan: warp-cli connect
-
-    Bağlantıyı Kes: warp-cli disconnect
-
-    Durum Kontrol: warp-cli status
-
-    Test: curl https://www.cloudflare.com/cdn-cgi/trace | grep warp
-
-📂 4. Faydalı Kısa Komutlar
-
-    Modem Üzerinden Dosya Paylaşımı (SMB): smb://192.168.1.1
-
-    Yazılım Merkezi Çalıştırma: gnome-software
-
-    Waydroid UI Başlatma: waydroid show-full-ui
-
-    Servis Başlatma: sudo systemctl start waydroid-container.service
-Usta Notu (9 Mayıs 2026): Facebook açılmama sorunu, "Vendor type" kontrolü ve Google hesap izinlerinin temizlenmesiyle (3. taraf uygulama izinleri) çözülmüştür.
-Hazırlayan: Köksal Usta (cehri50) 👊
+*
