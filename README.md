@@ -1,20 +1,20 @@
-# 📝 cehri50'nin Not Defteri (Avanos v2.0 Pro Not Sistemi)
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-Google AI Studio altyapısı ve modern web teknolojileriyle geliştirilmiş, hızlı, hafif ve kullanıcı dostu bir kişisel not tutma uygulamasıdır.
+# Run and deploy your AI Studio app
 
-## 🚀 Özellikler
-* ⚡ **Bun & Vite:** Ultra hızlı derleme ve modül yönetimi.
-* 🎨 **Tailwind CSS:** Jilet gibi, modern ve göze hitap eden arayüz tasarımı.
-* 🤖 **AI Studio Esintisi:** Yapay zeka destekli akıllı not yapısı.
-* 🐧 **Pardus Uyumlu:** Yerli ve milli Linux dağıtımımız Pardus (KDE + Wayland) üzerinde tam performanslı çalışma.
+This contains everything you need to run your app locally.
 
-## 🛠️ Kurulum ve Yerel Çalıştırma
+View your app in AI Studio: https://ai.studio/apps/456eba63-761b-4dfc-abb9-46fd7036fc44
 
-Projeyi bilgisayarınızda çalıştırmak için aşağıdaki adımları takip edin:
+## Run Locally
 
-```bash
-# 1. Bağımlılıkları yükleyin
-bun install
+**Prerequisites:**  Node.js
 
-# 2. Yerel geliştirme sunucusunu başlatın
-bun run dev
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
