@@ -209,5 +209,27 @@ lspci
 
 # İşlemci detaylarını gör
 lscpu`
+  },
+  {
+    id: '18',
+    title: 'Journal Loglarını Temizle',
+    category: 'cleaning',
+    isCode: true,
+    content: `# 500MB'tan büyük eski logları siler
+sudo journalctl --vacuum-size=500M
+
+# 2 günden eski logları siler
+sudo journalctl --vacuum-time=2d`
+  },
+  {
+    id: '19',
+    title: 'Disk Sağlığını Kontrol Et',
+    category: 'system',
+    isCode: true,
+    content: `# smartmontools yoksa kur
+sudo apt install smartmontools -y
+
+# Disk sağlığı özetini gör (sda yerine kendi diskini yaz)
+sudo smartctl -H /dev/sda`
   }
 ];
