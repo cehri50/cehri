@@ -182,4 +182,36 @@ text
 
 ---
 
+## 📌 NEDEN BU?
+
+| Özellik | Etkisi |
+| :--- | :--- |
+| **Emoji (💡)** | Dikkat çeker, "ipucu/komut" olduğunu anında belli eder |
+| **Başlık hizasında** | Diğer başlıklarla uyumlu, bütünlük bozulmaz |
+| **Komut bloğu** | Kopyala-yapıştır için hazır |
+| **Yatay çizgi yok** | Gereksiz kalabalık yapmaz, sade ve profesyonel durur |
+
+---
+
+## 🎯 EKRANDA NASIL GÖRÜNÜR?
+
+> ## 💡 Faydalı Kısa Komutlar 💡
+> 
+> ```bash
+> # Modem Üzerinden Dosya Paylaşımı (SMB)
+> smb://192.168.1.1
+> 
+> # Yazılım Merkezi
+> gnome-software
+> ...
+> ```
+
+Yani **ne çok sade, ne çok abartılı**. Tam kararında.
+
+---
+
+**Şimdi bunu kopyala, GitHub'daki README.md'de ilgili bölümün yerine yapıştır. Gerisi otomatik.** 👊
+
+Karar verdiysen, bu şekilde yayına alalım mı?
+
 
