@@ -182,15 +182,4 @@ text
 
 ---
 
-## ✍️ YAPMAN GEREKEN
 
-1. **Yukarıdaki kodu kopyala** (Üstteki kutu içindeki her şeyi seç, `Ctrl+C` yap).
-2. GitHub'da deponun içinde `README.md` dosyasını aç (yoksa "Add file" → "Create new file" deyip adını `README.md` yaz).
-3. **Yapıştır** (`Ctrl+V`).
-4. **Commit changes** (değişiklikleri kaydet).
-
-**İşte bitti.** Artık depona giren herkes bu yakışıklı, düzenli, çalıştırılabilir komutlarla dolu rehberi görür.
-
----
-
-*
