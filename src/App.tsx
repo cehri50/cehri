@@ -235,12 +235,17 @@ export default function App() {
     />
     </div>
 
-    <div className="flex items-center gap-3">
+    <div className="flex items-center gap-4">
+    <div className="hidden sm:flex items-center gap-2 text-[10px] font-mono text-zinc-500 bg-zinc-900/50 px-3 py-1.5 rounded-full border border-zinc-800">
+    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+    Sistem Aktif
+    </div>
     <button
     onClick={() => setIsAddModalOpen(true)}
-    className="flex items-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-500 px-4 py-2 rounded-lg border border-emerald-500/20 text-sm font-bold transition-all"
+    className="flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-lg shadow-emerald-500/20 text-sm font-bold transition-all active:scale-95"
     >
-    <Plus className="w-4 h-4" /> <span className="hidden sm:inline text-xs uppercase tracking-tight">YENİ NOT</span>
+    <Plus className="w-4 h-4" />
+    <span className="text-xs uppercase tracking-tight">YENİ NOT</span>
     </button>
     </div>
     </div>
